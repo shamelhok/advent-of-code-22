@@ -3,6 +3,7 @@ const { input12, test12 } = require("./puzzleInputs");
 function splitLines(input){
     return input.split('\n')
 }
+
 exports.splitLines=splitLines
 
 function solution(input){

@@ -100,55 +100,47 @@ function solve2(input) {
   let surfaceArea = 0;
   const cubes = getCubes(input);
   const dimensions = getDimensions(cubes);
-//   for (const cube of cubes) {
-//     if (!cubes.includes(cube - 10000)) {
-//       if (!isEnclosed(cube - 10000, cubes, dimensions)) {
-//         surfaceArea++;
-//       }
-//     }
-//     if (!cubes.includes(cube + 10000)) {
-//       if (!isEnclosed(cube + 10000, cubes, dimensions)) {
-//         surfaceArea++;
-//       }
-//     }
-//     if (!cubes.includes(cube - 100)) {
-//       if (!isEnclosed(cube - 100, cubes, dimensions)) {
-//         surfaceArea++;
-//       }
-//     }
-//     if (!cubes.includes(cube + 100)) {
-//       if (!isEnclosed(cube + 100, cubes, dimensions)) {
-//         surfaceArea++;
-//       }
-//     }
-//     if (!cubes.includes(cube - 1)) {
-//       if (!isEnclosed(cube - 1, cubes, dimensions)) {
-//         surfaceArea++;
-//       }
-//     }
-//     if (!cubes.includes(cube + 1)) {
-//       if (!isEnclosed(cube + 1, cubes, dimensions)) {
-//         surfaceArea++;
-//       }
-//     }
-//   }
-    const pocket =getPocket(0,cubes,dimensions)
-    console.log(pocket);
+  const { width, height, depth } = dimensions;
+  const max = (width+3) * (height+3) * (3+depth);
+  const pocket =getPocket(0,cubes,dimensions)
+  let enclosed = new Set()
+  for (const cube of cubes) {
+    for(const touching of getTouching(cube) ){
+      if(!cubes.includes(touching)){
+        if(pocket.includes(touching)){
+          surfaceArea++
+        }else{
+          enclosed.add(touching)
+        }
+      }
+    }
+  }
+  console.log(pocket,cubes)
+  console.log(max- pocket.length-enclosed.size);
+  
   return surfaceArea;
 }
 function getPocket(coord, cubes, dimensions) {
   const { width, height, depth } = dimensions;
+  // const [ width, height, depth ] =[10,10,10]
   const max = width * height * depth;
   let pocket = [coord];
   function next(coordinate){
     for( const touching of getTouching(coordinate)){
         if(!cubes.includes(touching)&& !pocket.includes(touching)){
-            pocket.push(touching)
-            next(touching)
+            let x = Math.floor(touching/10000)
+            let y = Math.floor(touching%10000/100)
+            let z = touching%100
+            if(x<width+3&&y<height+3&&z<depth+3&&x>=-3&&y>=-3&&z>=-3){
+              pocket.push(touching)
+              next(touching)
+            }
+            
         }
     }
   }
   next(coord)
+  return pocket
 }
 function areTouching(coord1, coord2) {
   return (
@@ -164,5 +156,5 @@ function getTouching(coord){
     return[coord+1,coord-1,coord+100,coord-100,coord+10000,coord-10000]
 }
 
-const x=solve2(test18)
+const x=solve2(input18)
 console.log(x);

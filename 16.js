@@ -98,24 +98,56 @@ function getLeadsToNames(str) {
 // }
 
 // console.log(solve(test16,30));
-function solve(input, minutes=30) {
+function solve(input, minutes = 30) {
   const valves = parseValves(input);
-  let currentValve= valves.AA
-  let flow =0
-    let released =0
-  function next(currentValve,minute=0){
-    if(minute>=minutes){
-        return
+  let currentValve = valves.AA;
+  let releasedArray = [];
+  function next(
+    currentValve=valves.AA,
+    minute = 0,
+    flow = 0,
+    released = 0,
+    path = [currentValve.name],
+    open=['AA']
+    ) {
+      // console.log({ name: currentValve.name, minute, flow, released, path });
+      released += flow;
+    function finish() {
+      // console.log("done");
+      // console.log(path);
+      if(released>Math.max(...releasedArray)){
+        console.log(path,open);
+        releasedArray.push(released);
+      }
+      return;
     }
-    for (const nextValve of currentValve.leadsTo){
-        console.log(nextValve.name, minute);
-        next(nextValve, minute+1)
+      if (path.length > 6&&!path.slice(-8).includes("open")) {
+        // console.log('no open for too long');
+        return finish();
+      }
+    if(minute>10&& flow<30||minute>16&&flow<60||minute>20&&flow<100){
+      return finish()
+    }
+    if (minute >= minutes) {
+      return finish();
+    }
+    
+    for (const nextValve of currentValve.leadsTo) {
+      // console.log(nextValve.name, minute);
+      next(nextValve, minute + 1, flow, released, [...path, nextValve.name],open);
+    }
+    if (!open.includes(currentValve.name)) {
+      flow += currentValve.flow;
+      next(currentValve, minute + 1, flow, released, [...path, "open"],[...open,currentValve.name]);
     }
   }
-  next(currentValve)
+  next();
+  console.log(releasedArray);
+  console.log(Math.max(...releasedArray));
+  return(Math.max(...releasedArray));
 }
 
-solve(test16,10)
+solve(input16, 29);
 
 // let x = parseValves(test16);
 // console.log(x);

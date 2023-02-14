@@ -1,4 +1,4 @@
-exports.test20=`1
+module.exports.test20=`1
 2
 -3
 3
@@ -6,7 +6,7 @@ exports.test20=`1
 0
 4`
 
-exports.input20-=`-4241
+exports.input20=`-4241
 -7731
 -8337
 8675

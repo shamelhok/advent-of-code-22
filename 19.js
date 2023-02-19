@@ -82,6 +82,7 @@ console.log(num);
 
 
 /////////////////////////////
+/*
 
 const RE = /Blueprint (\d+): Each ore robot costs (\d+) ore. Each clay robot costs (\d+) ore. Each obsidian robot costs (\d+) ore and (\d+) clay. Each geode robot costs (\d+) ore and (\d+) obsidian./;
 
@@ -111,3 +112,5 @@ const MASKS = TYPES.map(i => 0x3f << (i * 6));
 const [MASK_ORE, MASK_CLAY, MASK_OBS, MASK_GEODE] = MASKS;
 console.log( {MASKS,
 ROBOT});
+
+*/
